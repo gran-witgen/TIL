@@ -1,0 +1,19 @@
+#container{
+    text-align: center;
+}
+
+.btn{
+    background-color: blue;
+    color: yellow;
+    border: 1px solid black;
+    padding: 10px 40px 10px 40px;
+    cursor: pointer;
+    transition: all 1.5s;
+    font-weight: 700;
+}
+
+.btn:hover{
+    background-color: red;
+    color: white;
+    border: 1px solid black;
+}

@@ -31,3 +31,14 @@ class SampleAPI(APIView):
     # 認証に用いる
     permission_classes = [IsAuthenticated]
 ```
+
+serializers.py
+```python
+from .models import Sample
+from rest_framework import serializers
+
+class SampleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sample
+        fields = []
+```        

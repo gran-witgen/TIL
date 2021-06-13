@@ -94,3 +94,152 @@ class Sample implements SampleInterfaceName{
 
 なお、インターフェイスで宣言されたメソッドは、public abstract修飾子がついているため、クラスで実装する際にも  
 public修飾子を付ける必要がある  
+
+Javaの配列作成  
+
+
+sample
+```java
+型名 [] 変数名 = new 型名 [要素数];
+```
+
+例外処理  
+
+基本構文  
+```java
+try {
+} catch (例外型名 変数){
+}
+```  
+
+例外オブジェクトはExceptionクラスのサブクラス　　
+
+sample  
+```java
+
+class NotHaveMoney extends Exception{
+    NotHaveMoney(String message){
+        super(message);
+    }
+}
+
+class Me {
+    int money;
+
+    void setMony(int money){
+        try {
+            if (money < 0) {
+                throw new NotHaveMoney("お金がマイナスです");
+            }
+            this.money = money;
+            System.out.println("所持金は " + this.money + "です");
+        } catch (NotHaveMoney e){
+            e.printStackTrace();
+            System.out.println(e);
+        }
+    }
+
+    void calcZero(int a, int b) {
+        try {
+            int c = a / b;
+            System.out.println(c);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+}
+
+public class Sample {
+    public static void main(String [] args){
+        int [] moneyList = new int [2];
+        moneyList[0] = 5;
+        moneyList[1] = -5;
+        Me a = new Me();
+        Me b = new Me();
+        a.setMony(moneyList[0]);
+        b.setMony(moneyList[1]);
+        int c = 10;
+        int d = 0;
+        a.calcZero(c, d);
+    }
+}
+```
+
+setMoneyの「throw new Exception Name」で(自作)例外を読んでいる  
+Pythonのraiseみたいなもの  
+
+例外をメソッドの呼び出し元へ渡す  
+
+基本構文
+```java
+戻り値 method_name(引数) throws 例外の型 {
+　例外可能性のある処理;
+}
+```
+
+sample
+```java
+class NotHaveMoney extends Exception{
+    NotHaveMoney(String message){
+        super(message);
+    }
+}
+
+class TestThrowsException extends Exception {
+    TestThrowsException(String message){
+        super(message);
+    }
+}
+
+class Me {
+    int money;
+
+    void testThrowsExcept() throws TestThrowsException{
+        throw new TestThrowsException("例外を呼び出し元に渡します");
+    }
+
+    void setMony(int money){
+        try {
+            if (money < 0) {
+                throw new NotHaveMoney("お金がマイナスです");
+            }
+            this.money = money;
+            System.out.println("所持金は " + this.money + "です");
+        } catch (NotHaveMoney e){
+            e.printStackTrace();
+            System.out.println(e);
+        }
+    }
+
+
+
+    void calcZero(int a, int b) {
+        try {
+            int c = a / b;
+            System.out.println(c);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+}
+
+public class Sample {
+    public static void main(String [] args){
+        int [] moneyList = new int [2];
+        moneyList[0] = 5;
+        moneyList[1] = -5;
+        Me a = new Me();
+        Me b = new Me();
+        a.setMony(moneyList[0]);
+        b.setMony(moneyList[1]);
+        int c = 10;
+        int d = 0;
+        a.calcZero(c, d);
+        try {
+            a.testThrowsExcept();
+        } catch (TestThrowsException e){
+         e.printStackTrace();
+        }
+    }
+}
+```

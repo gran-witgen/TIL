@@ -243,3 +243,107 @@ public class Sample {
     }
 }
 ```
+
+Thread
+
+Threadの作り方  
+
+1. Threadクラスを継承したサブクラスのインスタンスでrun()をオーバーライドして、start()を実行する　　
+2. Runnableインターフェイスを実装したクラスのインスタンスをThreadクラスのコンストラクタの引数として扱い、start()を行う  
+
+1. example  
+```java
+class SampleThread extends Thread {
+    public void run(){
+        for (int i =0; i < 100; i += 1){
+            System.out.println("sample threadのrunメソッド" + i);
+        }
+    }
+}
+
+public class Sample {
+    public static void main(String [] args){
+        SampleThread sh = new SampleThread();
+        sh.start();
+        for (int i =0; i < 100; i +=1){
+            System.out.println("main関数の実行です" + i);
+        }
+    }
+}
+```
+2. exmaple
+```java
+class SampleThread extends Thread {
+    public void run(){
+        for (int i =0; i < 100; i += 1){
+            System.out.println("sample threadのrunメソッド" + i);
+        }
+    }
+}
+
+class SampleThread2 implements Runnable {
+    public void run(){
+        for (int i =0; i < 100; i += 1) {
+            System.out.println("sample thread2のrunメソッド" + i);
+        }
+    }
+}
+
+public class Sample {
+    public static void main(String [] args){
+        SampleThread2 sh2 = new SampleThread2();
+        Thread th = new Thread(sh2);
+        th.start();
+        for (int i =0; i < 100; i +=1){
+            System.out.println("main関数の実行です" + i);
+        }
+    }
+}
+```
+
+スレッドの処理が終わるまで待つ  
+
+マルチスレッドのプログラムだと各々スレッドが独自に処理を進めてしまうが  
+join()を使うことで、処理を待つことができる  
+
+```java
+class SampleThread extends Thread {
+    public void run(){
+        for (int i =0; i < 100; i += 1){
+            System.out.println("sample threadのrunメソッド" + i);
+        }
+    }
+}
+
+class SampleThread2 implements Runnable {
+    public void run(){
+        for (int i =0; i < 100; i += 1) {
+            System.out.println("sample thread2のrunメソッド" + i);
+        }
+    }
+}
+
+
+public class Sample {
+    public static void main(String [] args){
+        SampleThread2 sh2 = new SampleThread2();
+        Thread th = new Thread(sh2);
+        th.start();
+        // 以下の記述でthの処理が終わるまでmainスレッドは処理を始めない
+        try{
+            th.join();
+        }catch (InterruptedException e){
+            System.out.println(e);
+        }
+        System.out.println("スレッドの処理が終わりました");
+        for (int i =0; i < 100; i +=1){
+            System.out.println("main関数の実行です" + i);
+        }
+    }
+}
+```
+
+Threadの同期  
+同期を行わないと想定外の処理結果となる  
+その場合、synchronized修飾子をつけることで同期を取ることができる。  
+該当修飾子がある関数が実行されるとがロックされ、処理が完了するまで、他のスレッドから呼び出せなくなる
